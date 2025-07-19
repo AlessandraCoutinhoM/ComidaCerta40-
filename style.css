@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+}
+
+h1 {
+    color: #336699;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.search-box input {
+    width: 70%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-box button {
+    padding: 12px 20px;
+    background-color: #4682B4;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.search-box button:hover {
+    background-color: #336699;
+}
+
+.recipe-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.recipe-card {
+    background-color: #D0E0FF; /* Light blue, similar to UI in source */
+    border: 1px solid #B0E0E6;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.recipe-card h2 {
+    color: #336699;
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.recipe-card p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.recipe-card .ingredients ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recipe-card .ingredients li {
+    background-color: #E0FFD0; /* Light green, similar to logic module in source */
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.no-results {
+    text-align: center;
+    grid-column: 1 / -1; /* Span across all columns */
+    color: #666;
+    font-size: 18px;
+    padding: 20px;
+}
+
+.favorite-button {
+    background-color: #FFD700; /* Gold-like color */
+    color: #333;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    align-self: flex-start; /* Align button to the start within the flex column */
+}
+
+.favorite-button:hover {
+    background-color: #DAA520; /* Darker gold on hover */
+    transform: translateY(-1px);
+}
