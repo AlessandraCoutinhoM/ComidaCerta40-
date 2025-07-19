@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comida Certa 40+ - Busca de Receitas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        h1 {
+            color: #336699;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .search-box input {
+            width: 70%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        .search-box button {
+            padding: 12px 20px;
+            background-color: #4682B4;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .search-box button:hover {
+            background-color: #336699;
+        }
+        .recipe-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .recipe-card {
+            background-color: #D0E0FF; /* Light blue, similar to Ul in source */
+            border: 1px solid #B0E0E6;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .recipe-card h2 {
+            color: #336699;
+            margin-top: 0;
+            font-size: 20px;
+        }
+        .recipe-card p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .recipe-card .ingredients ul {
+            list-style: none;
+            padding: 0;
+        }
+        .recipe-card .ingredients li {
+            background-color: #E0FFD0; /* Light green, similar to logic module in source */
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        .no-results {
+            text-align: center;
+            grid-column: 1/-1; /* Span across all columns */
+            color: #666;
+            font-size: 18px;
+            padding: 20px;
+        }
+        .favorite-button {
+            background-color: #FFD700; /* Gold-like color */
+            color: #333;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            align-self: flex-start; /* Align button to the start within the flex column */
+        }
+        .favorite-button:hover {
+            background-color: #DAA520; /* Darker gold on hover */
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Buscar Receitas</h1>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Digite o ingrediente (ex: frango, peixe)">
+            <button id="searchButton">Buscar</button>
+        </div>
+        <div id="recipeResults" class="recipe-results">
+            <p class="no-results">Pesquise por receitas usando ingredientes como frango, peixe, filé, camarão ou salmão.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const recipeResults = document.getElementById('recipeResults');
+
+            // Dummy recipe data (replace with actual API calls in a real application)
+            const recipes = [
+                {
+                    id: 1, // Added an ID for unique identification
+                    name: "Frango Grelhado com Legumes",
+                    ingredients: ["Peito de frango", "Brócolis", "Cenoura", "Azeite", "Sal", "Pimenta"],
+                    instructions: "Grelhe o frango temperado e cozinhe os legumes no vapor."
+                },
+                {
+                    id: 2,
+                    name: "Salmão Assado com Aspargos",
+                    ingredients: ["Filé de salmão", "Aspargos", "Limão", "Alho", "Azeite", "Dill"],
+                    instructions: "Asse o salmão com aspargos e temperos por 15-20 minutos."
+                },
+                {
+                    id: 3,
+                    name: "Filé Mignon com Purê de Couve-flor",
+                    ingredients: ["Filé mignon", "Couve-flor", "Manteiga ghee", "Creme de leite", "Noz-moscada"],
+                    instructions: "Prepare o filé e o purê de couve-flor como acompanhamento."
+                },
+                {
+                    id: 4,
+                    name: "Camarão ao Alho e Óleo",
+                    ingredients: ["Camarão", "Alho", "Azeite", "Salsinha", "Pimenta do reino", "Limão"],
+                    instructions: "Refogue o camarão com alho e azeite. Finalize com salsinha e limão."
+                },
+                {
+                    id: 5,
+                    name: "Torta de Frango Low Carb",
+                    ingredients: ["Peito de frango desfiado", "Ovos", "Requeijão low carb", "Queijo ralado", "Creme de leite"],
+                    instructions: "Prepare a massa low carb e recheie com frango cremoso. Asse até dourar."
+                },
+                {
+                    id: 6,
+                    name: "Peixe Branco Assado com Ervas",
+                    ingredients: ["Filé de tilápia", "Tomilho", "Alecrim", "Limão siciliano", "Azeite", "Sal"],
+                    instructions: "Tempere o peixe e asse no forno com as ervas e rodelas de limão."
+                }
+            ];
+
+            const displayRecipes = (filteredRecipes) => {
+                recipeResults.innerHTML = ''; // Clear previous results
+                if (filteredRecipes.length === 0) {
+                    recipeResults.innerHTML = '<p class="no-results">Nenhuma receita encontrada. Tente outra palavra-chave.</p>';
+                    return;
+                }
+
+                filteredRecipes.forEach(recipe => {
+                    const recipeCard = document.createElement('div');
+                    recipeCard.classList.add('recipe-card');
+                    const ingredientsList = recipe.ingredients.map(ing => `<li>${ing}</li>`).join("");
+                    recipeCard.innerHTML = `
+                        <h2>${recipe.name}</h2>
+                        <div class="ingredients">
+                            <h3>Ingredientes:</h3>
+                            <ul>${ingredientsList}</ul>
+                        </div>
+                        <h3>Modo de Preparo:</h3>
+                        <p>${recipe.instructions}</p>
+                        <button class="favorite-button" data-recipe-id="${recipe.id}" data-recipe-name="${recipe.name}">Salvar como Favorito</button>
+                    `;
+                    recipeResults.appendChild(recipeCard);
+                });
+
+                // Attach event listeners to the new favorite buttons
+                document.querySelectorAll('.favorite-button').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const recipeId = event.target.dataset.recipeId;
+                        const recipeName = event.target.dataset.recipeName;
+                        saveRecipeAsFavorite(recipeId, recipeName);
+                    });
+                });
+            };
+
+            const saveRecipeAsFavorite = (id, name) => {
+                // In a real application, you would send this data to your backend
+                // (e.g., to the "Serviço de Receitas" or "Serviço de Usuários/Perfis"
+                // to save the recipe as a favorite for the logged-in user).
+                console.log(`Receita "${name}" (ID: ${id}) salva como favorita!`);
+                alert(`"${name}" foi salva como sua receita favorita!`); // User feedback
+                // You might also change the button text or style to indicate it's saved
+                // event.target.textContent = 'Salvo!';
+                // event.target.disabled = true;
+            };
+
+            const performSearch = () => {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                let filteredRecipes = [];
+                if (searchTerm === '') {
+                    recipeResults.innerHTML = '<p class="no-results">Por favor, digite um ingrediente para buscar receitas.</p>';
+                    return;
+                } else {
+                    filteredRecipes = recipes.filter(recipe =>
+                        recipe.name.toLowerCase().includes(searchTerm) ||
+                        recipe.ingredients.some(ingredient =>
+                            ingredient.toLowerCase().includes(searchTerm))
+                    );
+                }
+                displayRecipes(filteredRecipes);
+            };
+
+            // Initial prompt for the user to search
+            recipeResults.innerHTML = '<p class="no-results">Pesquise por receitas usando ingredientes como frango, peixe, filé, camarão ou salmão.</p>';
+
+            // Event listeners
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
